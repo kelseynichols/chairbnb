@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>chairbnb — sideline gear rental, bozeman mt</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #E9E9E9;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 14px;
+      color: #000000;
+      padding: 14px;
+      min-height: 100vh;
+    }
+
+    #column {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border: 1px solid #C4C4C4;
+      display: flex;
+      align-items: stretch;
+    }
+
+    /* ── LEFT RAIL ── */
+    #left-rail {
+      width: 210px;
+      min-width: 210px;
+      background: #F1F1F1;
+      border-right: 1px solid #C4C4C4;
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .logo-block {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo-slot {
+      width: 34px;
+      height: 34px;
+      border: 1px solid #C4C4C4;
+      background: #E4E4E4;
+      flex-shrink: 0;
+    }
+    .wordmark {
+      font-family: 'Gloria Hallelujah', cursive;
+      font-size: 21px;
+      line-height: 1;
+      color: #000000;
+      text-decoration: none;
+    }
+
+    .reserve-box {
+      border: 1px solid #A8451C;
+      background: #FFFFFF;
+      padding: 8px 10px;
+      font-size: 17px;
+      color: #A8451C;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+    }
+    .reserve-box:hover { color: #000000; }
+
+    .search-wrap {
+      position: relative;
+    }
+    #search-input {
+      width: 100%;
+      border: 1px solid #A8A8A8;
+      background: #FFFFFF;
+      padding: 6px 8px;
+      font-size: 14px;
+      font-family: 'Times New Roman', Times, serif;
+      color: #000000;
+      outline: none;
+    }
+    #search-input::placeholder { color: #888888; }
+    #search-input:focus { border-color: #666666; }
+
+    /* ── CALENDAR ── */
+    #calendar {
+      border: 1px solid #C4C4C4;
+    }
+    .cal-header {
+      background: #E4E4E4;
+      text-align: center;
+      padding: 4px;
+      font-size: 12px;
+      color: #666666;
+      border-bottom: 1px solid #C4C4C4;
+    }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 1px;
+      background: #C4C4C4;
+    }
+    .cal-day-name {
+      background: #E4E4E4;
+      text-align: center;
+      padding: 3px 0;
+      font-size: 11px;
+      color: #666666;
+    }
+    .cal-day {
+      background: #FFFFFF;
+      text-align: center;
+      padding: 4px 0;
+      font-size: 12px;
+      color: #000000;
+      min-height: 22px;
+    }
+    .cal-day.past { background: #F7F7F7; color: #999999; }
+    .cal-day.today { background: #FFF7D6; }
+    .cal-day.empty { background: #F7F7F7; }
+
+    /* ── HELP LINKS ── */
+    .help-links {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .help-links a {
+      font-size: 14px;
+      color: #A8451C;
+      text-decoration: underline;
+    }
+    .help-links a:hover { color: #000000; }
+
+    .rail-footer {
+      font-size: 13px;
+      color: #666666;
+      margin-top: auto;
+    }
+
+    /* ── CENTER ── */
+    #center {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .city-header {
+      background: #F7F7F7;
+      border-bottom: 1px solid #C4C4C4;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .city-name {
+      font-size: 26px;
+      line-height: 1;
+    }
+    .city-nav {
+      font-size: 13px;
+      color: #666666;
+    }
+    .city-nav a { color: #666666; text-decoration: none; }
+    .city-nav a:hover { color: #000000; text-decoration: underline; }
+
+    .hero {
+      padding: 12px 14px;
+      border-bottom: 1px solid #E4E4E4;
+    }
+    .hero-headline {
+      font-family: 'Gloria Hallelujah', cursive;
+      font-size: 26px;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+    .hero-sub {
+      font-size: 15px;
+      color: #000000;
+    }
+
+    /* ── CATEGORY COLUMNS ── */
+    #categories {
+      padding: 14px;
+      display: flex;
+      gap: 14px;
+      flex: 1;
+    }
+    .cat-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .cat-block {}
+    .cat-header {
+      background: #E4E4E4;
+      border: 1px solid #C4C4C4;
+      padding: 5px 8px;
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 1.1;
+    }
+    .cat-rows {}
+    .cat-row {
+      border-bottom: 1px solid #E4E4E4;
+      position: relative;
+    }
+    .cat-row:last-child { border-bottom: none; }
+    .cat-row-link {
+      display: block;
+      padding: 4px 8px 4px 8px;
+      font-size: 15px;
+      color: #A8451C;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .cat-row-link:hover { color: #000000; text-decoration: underline; }
+    .cat-row-detail {
+      display: none;
+      padding: 4px 8px 6px 8px;
+      font-size: 13px;
+      color: #666666;
+      border-top: 1px solid #E4E4E4;
+      background: #FAFAFA;
+    }
+    .cat-row-detail.open { display: block; }
+    .cat-row-detail .spec {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: #888888;
+      margin-bottom: 3px;
+    }
+    .cat-row-detail .not-bookable { font-size: 13px; margin-bottom: 3px; }
+    .cat-row-detail a {
+      color: #A8451C;
+      text-decoration: underline;
+      font-size: 13px;
+    }
+    .cat-row-detail a:hover { color: #000000; }
+
+    /* how it works block */
+    .how-rows {
+      padding: 0 8px;
+    }
+    .how-row {
+      padding: 4px 0;
+      font-size: 15px;
+      border-bottom: 1px solid #E4E4E4;
+      color: #000000;
+    }
+    .how-row:last-child { border-bottom: none; }
+    .how-row a {
+      color: #A8451C;
+      text-decoration: underline;
+    }
+    .how-row a:hover { color: #000000; }
+    .depot-detail {
+      display: none;
+      padding: 4px 0 6px 0;
+      font-size: 13px;
+      color: #666666;
+      border-top: 1px solid #E4E4E4;
+    }
+    .depot-detail.open { display: block; }
+
+    /* zero results */
+    #zero-results {
+      display: none;
+      padding: 14px;
+      font-size: 15px;
+      color: #000000;
+    }
+    #zero-results a { color: #A8451C; text-decoration: underline; }
+    #zero-results a:hover { color: #000000; }
+
+    /* ── SIGNUP STRIP ── */
+    #signup-strip {
+      border-top: 1px solid #C4C4C4;
+      background: #F7F7F7;
+      padding: 10px 12px;
+      transition: outline 0.1s;
+    }
+    #signup-strip.flash {
+      outline: 2px solid #A8451C;
+    }
+    .signup-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .signup-copy {
+      font-size: 15px;
+      flex: 1;
+      min-width: 180px;
+    }
+    #email-input {
+      width: 170px;
+      border: 1px solid #888888;
+      padding: 5px 8px;
+      font-size: 14px;
+      font-family: 'Times New Roman', Times, serif;
+      outline: none;
+      background: #FFFFFF;
+    }
+    #email-input:focus { border-color: #444; }
+    #notify-btn {
+      border: 1px solid #000000;
+      background: #EFEFEF;
+      padding: 5px 10px;
+      font-size: 14px;
+      font-family: 'Times New Roman', Times, serif;
+      cursor: pointer;
+    }
+    #notify-btn:hover { background: #E0E0E0; }
+    #notify-btn:disabled { opacity: 0.5; cursor: default; }
+    #signup-msg { font-size: 14px; color: #000000; }
+    #signup-msg.error { color: #A8451C; }
+
+    /* ── RIGHT RAIL ── */
+    #right-rail {
+      width: 150px;
+      min-width: 150px;
+      border-left: 1px solid #C4C4C4;
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #lang-select {
+      width: 100%;
+      border: 1px solid #A8A8A8;
+      padding: 4px 6px;
+      font-size: 14px;
+      font-family: 'Times New Roman', Times, serif;
+      background: #FFFFFF;
+      outline: none;
+    }
+
+    .rail-section {}
+    .rail-header {
+      background: #E4E4E4;
+      border: 1px solid #C4C4C4;
+      padding: 5px 8px;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    .rail-links {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .rail-links a {
+      font-size: 14px;
+      color: #A8451C;
+      text-decoration: underline;
+      display: block;
+      padding: 1px 0;
+    }
+    .rail-links a:hover { color: #000000; }
+    .field-note {
+      display: none;
+      font-size: 12px;
+      color: #666666;
+      padding: 4px 0 2px 0;
+      text-align: center;
+    }
+    .field-note.open { display: block; }
+
+    .inert-header {
+      background: #E4E4E4;
+      border: 1px solid #C4C4C4;
+      padding: 5px 8px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      #column {
+        flex-direction: column;
+      }
+      #left-rail, #right-rail {
+        width: 100%;
+        min-width: 0;
+        border-right: none;
+        border-left: none;
+        border-bottom: 1px solid #C4C4C4;
+      }
+      #center { order: -1; }
+      #left-rail { order: 0; }
+      #right-rail { display: none; }
+      #categories { flex-direction: column; }
+      .cat-col { flex-direction: row; flex-wrap: wrap; }
+      .cat-block { min-width: 160px; flex: 1; }
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 8px; }
+      .cat-col { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="column">
+
+  <!-- ══ LEFT RAIL ══ -->
+  <div id="left-rail">
+    <div class="logo-block">
+      <div class="logo-slot" title="logo coming soon"></div>
+      <span class="wordmark">chairbnb</span>
+    </div>
+
+    <a class="reserve-box" href="#" id="reserve-btn">reserve gear</a>
+
+    <div class="search-wrap">
+      <input type="text" id="search-input" placeholder="search gear" autocomplete="off">
+    </div>
+
+    <div id="calendar">
+      <div class="cal-header" id="cal-month-label"></div>
+      <div class="cal-grid" id="cal-grid"></div>
+    </div>
+
+    <div class="help-links">
+      <a href="#">help, faq, terms</a>
+      <a href="#">damage &amp; late fees</a>
+      <a href="#">pickup instructions</a>
+    </div>
+
+    <div class="rail-footer">built by a guy with too many camp chairs</div>
+  </div>
+
+  <!-- ══ CENTER ══ -->
+  <div id="center">
+
+    <div class="city-header">
+      <span class="city-name">bozeman, mt</span>
+      <span class="city-nav">
+        <a href="#">saved</a> &nbsp;·&nbsp;
+        <a href="#">reserve</a> &nbsp;·&nbsp;
+        <a href="#">acct</a>
+      </span>
+    </div>
+
+    <div class="hero">
+      <div class="hero-headline">show up. sit down.</div>
+      <div class="hero-sub">chairs. canopies. coolers. wagons. heaters. rented, not packed.</div>
+    </div>
+
+    <div id="zero-results">
+      nothing matches that. we only have chairs, canopies, coolers, wagons, heaters.
+      <a href="#" id="see-everything">see everything</a>
+    </div>
+
+    <div id="categories">
+      <!-- col 1 -->
+      <div class="cat-col">
+        <div class="cat-block" data-group="seating">
+          <div class="cat-header">seating</div>
+          <div class="cat-rows">
+            <div class="cat-row" data-slug="camp-chairs">
+              <a class="cat-row-link" href="#">camp chairs</a>
+              <div class="cat-row-detail" id="detail-camp-chairs">
+                <div class="spec">qty: 24 · $12/day · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="camp-chairs">notify me about camp chairs</a>
+              </div>
+            </div>
+            <div class="cat-row" data-slug="webbed-chairs">
+              <a class="cat-row-link" href="#">webbed chairs</a>
+              <div class="cat-row-detail" id="detail-webbed-chairs">
+                <div class="spec">qty: — · price: — · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="webbed-chairs">notify me about webbed chairs</a>
+              </div>
+            </div>
+            <div class="cat-row" data-slug="bleacher-seats">
+              <a class="cat-row-link" href="#">bleacher seats</a>
+              <div class="cat-row-detail" id="detail-bleacher-seats">
+                <div class="spec">qty: — · price: — · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="bleacher-seats">notify me about bleacher seats</a>
+              </div>
+            </div>
+            <div class="cat-row" data-slug="stadium-cushions">
+              <a class="cat-row-link" href="#">stadium cushions</a>
+              <div class="cat-row-detail" id="detail-stadium-cushions">
+                <div class="spec">qty: — · price: — · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="stadium-cushions">notify me about stadium cushions</a>
+              </div>
+            </div>
+            <div class="cat-row" data-slug="folding-tables">
+              <a class="cat-row-link" href="#">folding tables</a>
+              <div class="cat-row-detail" id="detail-folding-tables">
+                <div class="spec">qty: — · soon · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="folding-tables">notify me about folding tables</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cat-block" data-group="shelter">
+          <div class="cat-header">shelter</div>
+          <div class="cat-rows">
+            <div class="cat-row" data-slug="canopies-10x10">
+              <a class="cat-row-link" href="#">canopies 10x10</a>
+              <div class="cat-row-detail" id="detail-canopies-10x10">
+                <div class="spec">qty: 6 · $35/day · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="canopies-10x10">notify me about canopies 10x10</a>
+              </div>
+            </div>
+            <div class="cat-row" data-slug="canopies-10x20">
+              <a class="cat-row-link" href="#">canopies 10x20</a>
+              <div class="cat-row-detail" id="detail-canopies-10x20">
+                <div class="spec">qty: — · price: — · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="canopies-10x20">notify me about canopies 10x20</a>
+              </div>
+            </div>
+            <div class="cat-row" data-slug="sidewalls">
+              <a class="cat-row-link" href="#">sidewalls</a>
+              <div class="cat-row-detail" id="detail-sidewalls">
+                <div class="spec">qty: — · price: — · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="sidewalls">notify me about sidewalls</a>
+              </div>
+            </div>
+            <div class="cat-row" data-slug="sandbags-stakes">
+              <a class="cat-row-link" href="#">sandbags / stakes</a>
+              <div class="cat-row-detail" id="detail-sandbags-stakes">
+                <div class="spec">qty: — · price: — · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="sandbags-stakes">notify me about sandbags / stakes</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- col 2 -->
+      <div class="cat-col">
+        <div class="cat-block" data-group="hauling">
+          <div class="cat-header">hauling &amp; cold</div>
+          <div class="cat-rows">
+            <div class="cat-row" data-slug="sideline-wagons">
+              <a class="cat-row-link" href="#">sideline wagons</a>
+              <div class="cat-row-detail" id="detail-sideline-wagons">
+                <div class="spec">qty: 4 · $15/day · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="sideline-wagons">notify me about sideline wagons</a>
+              </div>
+            </div>
+            <div class="cat-row" data-slug="coolers-45qt">
+              <a class="cat-row-link" href="#">coolers 45qt</a>
+              <div class="cat-row-detail" id="detail-coolers-45qt">
+                <div class="spec">qty: 10 · $8/day · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="coolers-45qt">notify me about coolers 45qt</a>
+              </div>
+            </div>
+            <div class="cat-row" data-slug="coolers-70qt">
+              <a class="cat-row-link" href="#">coolers 70qt</a>
+              <div class="cat-row-detail" id="detail-coolers-70qt">
+                <div class="spec">qty: — · price: — · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="coolers-70qt">notify me about coolers 70qt</a>
+              </div>
+            </div>
+            <div class="cat-row" data-slug="ice-packs">
+              <a class="cat-row-link" href="#">ice packs</a>
+              <div class="cat-row-detail" id="detail-ice-packs">
+                <div class="spec">qty: — · price: — · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="ice-packs">notify me about ice packs</a>
+              </div>
+            </div>
+            <div class="cat-row" data-slug="water-jugs">
+              <a class="cat-row-link" href="#">water jugs</a>
+              <div class="cat-row-detail" id="detail-water-jugs">
+                <div class="spec">qty: — · price: — · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="water-jugs">notify me about water jugs</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cat-block" data-group="warmth">
+          <div class="cat-header">warmth</div>
+          <div class="cat-rows">
+            <div class="cat-row" data-slug="portable-heaters">
+              <a class="cat-row-link" href="#">portable heaters</a>
+              <div class="cat-row-detail" id="detail-portable-heaters">
+                <div class="spec">qty: 8 · $20/day · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="portable-heaters">notify me about portable heaters</a>
+              </div>
+            </div>
+            <div class="cat-row" data-slug="propane-tanks">
+              <a class="cat-row-link" href="#">propane tanks</a>
+              <div class="cat-row-detail" id="detail-propane-tanks">
+                <div class="spec">qty: — · price: — · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="propane-tanks">notify me about propane tanks</a>
+              </div>
+            </div>
+            <div class="cat-row" data-slug="blankets">
+              <a class="cat-row-link" href="#">blankets</a>
+              <div class="cat-row-detail" id="detail-blankets">
+                <div class="spec">qty: — · price: — · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="blankets">notify me about blankets</a>
+              </div>
+            </div>
+            <div class="cat-row" data-slug="hand-warmers">
+              <a class="cat-row-link" href="#">hand warmers</a>
+              <div class="cat-row-detail" id="detail-hand-warmers">
+                <div class="spec">qty: — · price: — · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="hand-warmers">notify me about hand warmers</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- col 3 -->
+      <div class="cat-col">
+        <div class="cat-block">
+          <div class="cat-header">how it works</div>
+          <div class="how-rows">
+            <div class="how-row">1. reserve online</div>
+            <div class="how-row">2. pick up near the field</div>
+            <div class="how-row">3. drop it off</div>
+            <div class="how-row">
+              <a href="#" id="depot-link">depot hours &amp; address</a>
+              <div class="depot-detail" id="depot-detail">
+                <div class="spec" style="font-family:'Space Mono',monospace;font-size:11px;color:#888">hours: tbd</div>
+                exact address at pickup confirmation.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cat-block" data-group="bundles">
+          <div class="cat-header">bundles</div>
+          <div class="cat-rows">
+            <div class="cat-row" data-slug="4-chairs-canopy">
+              <a class="cat-row-link" href="#">4 chairs + canopy</a>
+              <div class="cat-row-detail" id="detail-4-chairs-canopy">
+                <div class="spec">qty: — · price: — · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="4-chairs-canopy">notify me about this bundle</a>
+              </div>
+            </div>
+            <div class="cat-row" data-slug="cold-weekend-kit">
+              <a class="cat-row-link" href="#">cold weekend kit</a>
+              <div class="cat-row-detail" id="detail-cold-weekend-kit">
+                <div class="spec">qty: — · price: — · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="cold-weekend-kit">notify me about this bundle</a>
+              </div>
+            </div>
+            <div class="cat-row" data-slug="team-sideline-set">
+              <a class="cat-row-link" href="#">team sideline set</a>
+              <div class="cat-row-detail" id="detail-team-sideline-set">
+                <div class="spec">qty: — · price: — · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="team-sideline-set">notify me about this bundle</a>
+              </div>
+            </div>
+            <div class="cat-row" data-slug="whole-tournament">
+              <a class="cat-row-link" href="#">whole tournament</a>
+              <div class="cat-row-detail" id="detail-whole-tournament">
+                <div class="spec">qty: — · price: — · pickup: bozeman depot</div>
+                <div class="not-bookable">not bookable yet.</div>
+                <a href="#" class="notify-cat" data-cat="whole-tournament">notify me about this bundle</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /categories -->
+
+    <!-- ── SIGNUP STRIP ── -->
+    <div id="signup-strip">
+      <div class="signup-row" id="signup-form-row">
+        <span class="signup-copy">nothing bookable yet — leave an email and we'll say when it is</span>
+        <input type="email" id="email-input" placeholder="your@email.com" autocomplete="email">
+        <button id="notify-btn" type="button">get notified</button>
+      </div>
+      <div id="signup-msg" style="display:none"></div>
+    </div>
+
+  </div><!-- /center -->
+
+  <!-- ══ RIGHT RAIL ══ -->
+  <div id="right-rail">
+    <select id="lang-select">
+      <option value="en">english</option>
+      <option value="es">español</option>
+    </select>
+
+    <div class="rail-section">
+      <div class="rail-header">nearby fields</div>
+      <div class="rail-links" id="nearby-fields">
+        <a href="#" class="field-link" data-field="belgrade">belgrade</a>
+        <a href="#" class="field-link" data-field="four-corners">four corners</a>
+        <a href="#" class="field-link" data-field="livingston">livingston</a>
+        <a href="#" class="field-link" data-field="big-sky">big sky</a>
+        <a href="#" class="field-link" data-field="butte">butte</a>
+        <a href="#" class="field-link" data-field="helena">helena</a>
+        <a href="#" class="field-link" data-field="missoula">missoula</a>
+        <div class="field-note" id="field-not-open">not open yet — bozeman first</div>
+      </div>
+    </div>
+
+    <div class="inert-header">coming later</div>
+    <div class="inert-header">tournaments</div>
+    <div class="inert-header">depot map</div>
+  </div>
+
+</div><!-- /column -->
+
+<script>
+  // ── CONFIG ──────────────────────────────────────────────────────────
+  // Replace with your Formspree form ID: https://formspree.io
+  // Create a free form at formspree.io and paste the endpoint here.
+  const FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+
+  // ── STATE ────────────────────────────────────────────────────────────
+  let query = '';
+  let expandedItem = null;
+  let intent = null;
+  let signupState = 'idle'; // 'idle' | 'submitting' | 'done' | 'error'
+
+  // ── CALENDAR ─────────────────────────────────────────────────────────
+  (function buildCalendar() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const today = now.getDate();
+
+    const monthNames = ['january','february','march','april','may','june',
+                        'july','august','september','october','november','december'];
+    document.getElementById('cal-month-label').textContent =
+      monthNames[month] + ' ' + year;
+
+    const grid = document.getElementById('cal-grid');
+    const dayNames = ['s','m','t','w','t','f','s'];
+    dayNames.forEach(d => {
+      const el = document.createElement('div');
+      el.className = 'cal-day-name';
+      el.textContent = d;
+      grid.appendChild(el);
+    });
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    for (let i = 0; i < firstDay; i++) {
+      const el = document.createElement('div');
+      el.className = 'cal-day empty';
+      grid.appendChild(el);
+    }
+    for (let d = 1; d <= daysInMonth; d++) {
+      const el = document.createElement('div');
+      let cls = 'cal-day';
+      if (d < today) cls += ' past';
+      else if (d === today) cls += ' today';
+      el.className = cls;
+      el.textContent = d;
+      grid.appendChild(el);
+    }
+  })();
+
+  // ── RESERVE BUTTON ────────────────────────────────────────────────────
+  document.getElementById('reserve-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    intent = 'reserve';
+    scrollToSignup();
+  });
+
+  function scrollToSignup() {
+    const strip = document.getElementById('signup-strip');
+    strip.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    setTimeout(() => {
+      document.getElementById('email-input').focus();
+      strip.classList.add('flash');
+      setTimeout(() => strip.classList.remove('flash'), 600);
+    }, 300);
+  }
+
+  // ── SEARCH FILTER ─────────────────────────────────────────────────────
+  document.getElementById('search-input').addEventListener('input', function() {
+    query = this.value.trim().toLowerCase();
+    applyFilter();
+  });
+
+  document.getElementById('see-everything').addEventListener('click', function(e) {
+    e.preventDefault();
+    query = '';
+    document.getElementById('search-input').value = '';
+    applyFilter();
+  });
+
+  function applyFilter() {
+    const categories = document.getElementById('categories');
+    const zeroResults = document.getElementById('zero-results');
+    const blocks = document.querySelectorAll('.cat-block[data-group]');
+    let totalVisible = 0;
+
+    blocks.forEach(block => {
+      const rows = block.querySelectorAll('.cat-row');
+      let blockVisible = 0;
+      rows.forEach(row => {
+        const label = row.querySelector('.cat-row-link').textContent.toLowerCase();
+        const match = !query || label.includes(query);
+        row.style.display = match ? '' : 'none';
+        if (match) blockVisible++;
+      });
+      block.style.display = blockVisible > 0 ? '' : 'none';
+      totalVisible += blockVisible;
+    });
+
+    if (query && totalVisible === 0) {
+      categories.style.display = 'none';
+      zeroResults.style.display = 'block';
+    } else {
+      categories.style.display = 'flex';
+      zeroResults.style.display = 'none';
+    }
+  }
+
+  // ── CATEGORY ROW EXPAND ───────────────────────────────────────────────
+  document.querySelectorAll('.cat-row-link').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const row = this.closest('.cat-row');
+      const slug = row.dataset.slug;
+      const detail = row.querySelector('.cat-row-detail');
+
+      if (expandedItem === slug) {
+        detail.classList.remove('open');
+        expandedItem = null;
+      } else {
+        if (expandedItem) {
+          const prev = document.querySelector('.cat-row-detail.open');
+          if (prev) prev.classList.remove('open');
+        }
+        detail.classList.add('open');
+        expandedItem = slug;
+      }
+    });
+  });
+
+  // ── NOTIFY ME (category) ──────────────────────────────────────────────
+  document.querySelectorAll('.notify-cat').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      intent = this.dataset.cat;
+      scrollToSignup();
+    });
+  });
+
+  // ── DEPOT HOURS ───────────────────────────────────────────────────────
+  document.getElementById('depot-link').addEventListener('click', function(e) {
+    e.preventDefault();
+    const detail = document.getElementById('depot-detail');
+    detail.classList.toggle('open');
+  });
+
+  // ── NEARBY FIELDS ─────────────────────────────────────────────────────
+  document.querySelectorAll('.field-link').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const note = document.getElementById('field-not-open');
+      note.classList.add('open');
+    });
+  });
+
+  // ── SIGNUP FORM ───────────────────────────────────────────────────────
+  document.getElementById('notify-btn').addEventListener('click', async function() {
+    const emailInput = document.getElementById('email-input');
+    const email = emailInput.value.trim();
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email || !emailRe.test(email)) {
+      emailInput.setCustomValidity('please enter a valid email address');
+      emailInput.reportValidity();
+      return;
+    }
+    emailInput.setCustomValidity('');
+
+    if (signupState === 'submitting' || signupState === 'done') return;
+    signupState = 'submitting';
+
+    const btn = document.getElementById('notify-btn');
+    btn.disabled = true;
+    btn.textContent = 'sending...';
+
+    const payload = { email, intent: intent || 'general' };
+
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        signupState = 'done';
+        showSignupMsg("you're on the list. we'll email you when bozeman gear is bookable.", false);
+      } else {
+        throw new Error('non-ok response');
+      }
+    } catch (err) {
+      signupState = 'error';
+      btn.disabled = false;
+      btn.textContent = 'get notified';
+      showSignupMsg("that didn't go through. try again or email <a href='mailto:hello@chairbnb.com'>hello@chairbnb.com</a>.", true);
+    }
+  });
+
+  function showSignupMsg(html, isError) {
+    const formRow = document.getElementById('signup-form-row');
+    const msg = document.getElementById('signup-msg');
+    if (signupState === 'done') formRow.style.display = 'none';
+    msg.style.display = 'block';
+    msg.innerHTML = html;
+    msg.className = isError ? 'error' : '';
+  }
+</script>
+</body>
+</html>
