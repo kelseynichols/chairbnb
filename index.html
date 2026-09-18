@@ -14,7 +14,7 @@
       font-family: 'Times New Roman', Times, serif;
       font-size: 14px;
       color: #000000;
-      padding: 14px;
+      padding: 32px 24px;
       min-height: 100vh;
     }
 
@@ -25,6 +25,7 @@
       border: 1px solid #C4C4C4;
       display: flex;
       align-items: stretch;
+      min-height: calc(100vh - 64px);
     }
 
     /* ── LEFT RAIL ── */
@@ -387,29 +388,85 @@
       font-weight: bold;
     }
 
+    /* mobile header — hidden on desktop */
+    #mobile-header { display: none; }
+
     /* ── RESPONSIVE ── */
+
+    /* tablet: hide right rail, 2-col categories */
     @media (max-width: 900px) {
+      body { padding: 20px 16px; }
+      #right-rail { display: none; }
+      #categories { flex-wrap: wrap; }
+      .cat-col { flex: 1 1 45%; min-width: 200px; }
+    }
+
+    /* mobile */
+    @media (max-width: 680px) {
+      body { padding: 8px; }
+
       #column {
         flex-direction: column;
+        min-height: calc(100vh - 16px);
       }
-      #left-rail, #right-rail {
+
+      /* show mobile header, hide logo in the left rail */
+      #mobile-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 14px;
+        border-bottom: 1px solid #C4C4C4;
+        background: #F1F1F1;
+        gap: 10px;
+      }
+      #mobile-header .logo-block { flex: 1; }
+      #mobile-header .reserve-box { white-space: nowrap; font-size: 14px; padding: 6px 10px; }
+
+      /* order: center first, left rail second, right rail hidden */
+      #center   { order: 1; }
+      #left-rail { order: 2; }
+      #right-rail { display: none; }
+
+      /* left rail becomes a compact info footer */
+      #left-rail {
         width: 100%;
         min-width: 0;
         border-right: none;
-        border-left: none;
-        border-bottom: 1px solid #C4C4C4;
+        border-top: 1px solid #C4C4C4;
+        padding: 14px 16px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        column-gap: 24px;
+        row-gap: 12px;
+        align-items: flex-start;
       }
-      #center { order: -1; }
-      #left-rail { order: 0; }
-      #right-rail { display: none; }
-      #categories { flex-direction: column; }
-      .cat-col { flex-direction: row; flex-wrap: wrap; }
-      .cat-block { min-width: 160px; flex: 1; }
-    }
+      /* hide the desktop logo block and reserve btn from rail */
+      #left-rail .logo-block,
+      #left-rail > a.reserve-box { display: none; }
+      /* hide calendar on mobile — non-interactive */
+      #calendar { display: none; }
+      /* search takes a full row */
+      .search-wrap { flex: 0 0 100%; }
+      /* help links flow inline */
+      .help-links { flex-direction: row; flex-wrap: wrap; gap: 6px 14px; justify-content: flex-start; text-align: left; }
+      .rail-footer { flex: 0 0 100%; margin-top: 0; }
 
-    @media (max-width: 600px) {
-      body { padding: 8px; }
-      .cat-col { flex-direction: column; }
+      /* city header */
+      .city-name { font-size: 20px; }
+
+      /* categories single column */
+      #categories { flex-direction: column; padding: 12px; gap: 12px; }
+      .cat-col { flex: 1 1 100%; }
+
+      /* bigger tap targets */
+      .cat-row-link { padding: 8px 8px; }
+
+      /* signup strip stacks vertically */
+      .signup-row { flex-direction: column; align-items: stretch; }
+      .signup-copy { min-width: 0; }
+      #email-input { width: 100%; }
+      #notify-btn { width: 100%; text-align: center; padding: 9px 10px; }
     }
   </style>
 </head>
@@ -446,6 +503,14 @@
 
   <!-- ══ CENTER ══ -->
   <div id="center">
+
+    <div id="mobile-header">
+      <div class="logo-block">
+        <div class="logo-slot" title="logo coming soon"></div>
+        <span class="wordmark">chairbnb</span>
+      </div>
+      <a class="reserve-box" href="#" id="reserve-btn-mobile">reserve gear</a>
+    </div>
 
     <div class="city-header">
       <span class="city-name">bozeman, mt</span>
@@ -792,10 +857,12 @@
   })();
 
   // ── RESERVE BUTTON ────────────────────────────────────────────────────
-  document.getElementById('reserve-btn').addEventListener('click', function(e) {
-    e.preventDefault();
-    intent = 'reserve';
-    scrollToSignup();
+  ['reserve-btn', 'reserve-btn-mobile'].forEach(function(id) {
+    document.getElementById(id).addEventListener('click', function(e) {
+      e.preventDefault();
+      intent = 'reserve';
+      scrollToSignup();
+    });
   });
 
   function scrollToSignup() {
