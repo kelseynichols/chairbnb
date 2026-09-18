@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>chairbnb — sideline gear rental, bozeman mt</title>
+  <link rel="icon" type="image/png" href="chair-bw.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
   <style>
@@ -48,9 +49,8 @@
     .logo-slot {
       width: 34px;
       height: 34px;
-      border: 1px solid #C4C4C4;
-      background: #E4E4E4;
       flex-shrink: 0;
+      object-fit: contain;
     }
     .wordmark {
       font-family: 'Gloria Hallelujah', cursive;
@@ -144,6 +144,14 @@
       font-size: 13px;
       color: #666666;
       margin-top: auto;
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+    }
+    .guy-img {
+      width: 44px;
+      flex-shrink: 0;
+      object-fit: contain;
     }
 
     /* ── CENTER ── */
@@ -177,6 +185,12 @@
       padding: 12px 14px;
       border-bottom: 1px solid #E4E4E4;
     }
+    .hero-main {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
     .hero-headline {
       font-family: 'Gloria Hallelujah', cursive;
       font-size: 26px;
@@ -186,6 +200,12 @@
     .hero-sub {
       font-size: 15px;
       color: #000000;
+    }
+    .hero-chair {
+      width: 90px;
+      flex-shrink: 0;
+      object-fit: contain;
+      opacity: 0.9;
     }
 
     /* ── CATEGORY COLUMNS ── */
@@ -450,7 +470,8 @@
       .search-wrap { flex: 0 0 100%; }
       /* help links flow inline */
       .help-links { flex-direction: row; flex-wrap: wrap; gap: 6px 14px; justify-content: flex-start; text-align: left; }
-      .rail-footer { flex: 0 0 100%; margin-top: 0; }
+      .rail-footer { flex: 0 0 100%; margin-top: 0; align-items: center; }
+      .hero-chair { width: 70px; }
 
       /* city header */
       .city-name { font-size: 20px; }
@@ -477,7 +498,7 @@
   <!-- ══ LEFT RAIL ══ -->
   <div id="left-rail">
     <div class="logo-block">
-      <div class="logo-slot" title="logo coming soon"></div>
+      <img class="logo-slot" src="chair-bw.png" alt="chairbnb">
       <span class="wordmark">chairbnb</span>
     </div>
 
@@ -498,7 +519,10 @@
       <a href="#">pickup instructions</a>
     </div>
 
-    <div class="rail-footer">built by a guy with too many camp chairs</div>
+    <div class="rail-footer">
+      <img src="chair-guy.png" alt="" class="guy-img">
+      <span>built by a guy with too many camp chairs</span>
+    </div>
   </div>
 
   <!-- ══ CENTER ══ -->
@@ -506,7 +530,7 @@
 
     <div id="mobile-header">
       <div class="logo-block">
-        <div class="logo-slot" title="logo coming soon"></div>
+        <img class="logo-slot" src="chair-bw.png" alt="chairbnb">
         <span class="wordmark">chairbnb</span>
       </div>
       <a class="reserve-box" href="#" id="reserve-btn-mobile">reserve gear</a>
@@ -522,8 +546,13 @@
     </div>
 
     <div class="hero">
-      <div class="hero-headline">show up. sit down.</div>
-      <div class="hero-sub">chairs. canopies. coolers. wagons. heaters. rented, not packed.</div>
+      <div class="hero-main">
+        <div>
+          <div class="hero-headline">show up. sit down.</div>
+          <div class="hero-sub">chairs. canopies. coolers. wagons. heaters. rented, not packed.</div>
+        </div>
+        <img src="chair-color.png" alt="" class="hero-chair">
+      </div>
     </div>
 
     <div id="zero-results">
